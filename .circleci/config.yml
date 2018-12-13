@@ -1,0 +1,36 @@
+version: 2
+jobs:
+  deploy-staging:
+    docker:
+      - image: circleci/python:2.7-jessie
+    working_directory: ~/django-demo
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "f5:09:4a:69:50:07:1f:05:9a:3f:99:40:f7:4f:87:d3"      
+      - checkout
+      - run:
+          name: Install awscli
+          command: sudo pip install awscli
+      - run:
+          name: Archive content of git repo without git files
+          command: git archive -o django-demo.zip --format=zip HEAD
+      - run:
+          name: Create app folder
+          command: mkdir django-demo
+      - run:
+          name: Unzip app package
+          command: cd django-demo && unzip ../django-demo.zip
+      - run:
+          name: Remove unimportant stuff
+          command: cd django-demo && rm -rf .circleci && rm .gitignore
+      - run:
+          name: Deploy to EC2
+          command: scp -o "StrictHostKeyChecking no" -r django-demo ubuntu@18.213.152.190:~/circleci
+workflows:
+  version: 2
+  build:
+    jobs:
+      - deploy-staging:
+          filters:
+            branches:master             
