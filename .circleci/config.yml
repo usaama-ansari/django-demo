@@ -33,4 +33,5 @@ workflows:
     jobs:
       - deploy-staging:
           filters:
-            branches:master             
+            branches:
+              only: master        
