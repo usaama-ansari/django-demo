@@ -26,7 +26,7 @@ jobs:
           command: cd django-demo && rm -rf .circleci && rm .gitignore
       - run:
           name: Deploy to EC2
-          command: scp -o "StrictHostKeyChecking no" -r django-demo ubuntu@18.213.152.190:~/circleci
+          command: scp -o "StrictHostKeyChecking no" -r django-demo ubuntu@52.0.217.29:~/circleci
 workflows:
   version: 2
   build:
