@@ -25,8 +25,15 @@ jobs:
           name: Remove unimportant stuff
           command: cd django-demo && rm -rf .circleci && rm .gitignore
       - run:
+          name: Fix host authenticity for 18.233.46.10
+          command: |
+            ssh-keyscan 52.0.217.29 >> ~/.ssh/known_hosts
+            echo "Host *" >> ~/.ssh/config
+            echo "    User ubuntu" >> ~/.ssh/config
+            echo "    ForwardAgent Yes" >> ~/.ssh/config
+      - run:
           name: Deploy to EC2
-          command: scp -o "StrictHostKeyChecking no" -r django-demo ubuntu@52.0.217.29:~/circleci
+          command: scp -r django-demo ubuntu@52.0.217.29:~/circleci
 workflows:
   version: 2
   build:
