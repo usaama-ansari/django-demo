@@ -37,7 +37,7 @@ jobs:
 
       - run:
           name: test command
-          command: ssh ubuntu@52.0.217.29 ~/test.sh
+          command: ssh ubuntu@52.0.217.29 /home/ubuntu/test.sh
 workflows:
   version: 2
   build:
